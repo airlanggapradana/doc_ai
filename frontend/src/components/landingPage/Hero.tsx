@@ -20,7 +20,7 @@ const Hero = () => {
         <div className="mt-8 flex flex-wrap justify-start gap-4">
           <Link
             className="block w-full rounded bg-indigo-500 px-12 py-3 text-base font-semibold text-white shadow hover:bg-red-500 focus:outline-none focus:ring active:bg-red-500 sm:w-auto"
-            href="#"
+            href={"/register"}
           >
             Mulai Sekarang
           </Link>
