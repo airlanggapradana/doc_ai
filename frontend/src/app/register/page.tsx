@@ -1,4 +1,5 @@
 import Register from "@/components/auth/Register";
+import Back from "@/components/Back";
 import React from "react";
 
 export default function RegisterPage() {
@@ -7,6 +8,7 @@ export default function RegisterPage() {
       <div className="w-full">
         <div className="mx-auto max-w-screen-2xl">
           <div className="mx-auto max-w-3xl">
+            <Back />
             <h1 className="mt-6 text-center text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
               Buat Akun
             </h1>

@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const registerFormSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -21,118 +22,119 @@ const registerFormSchema = z.object({
 });
 
 const Register = () => {
+  const form = useForm<z.infer<typeof registerFormSchema>>({
+    resolver: zodResolver(registerFormSchema),
+    defaultValues: {
+      email: "",
+      name: "",
+      password: "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<z.infer<typeof registerFormSchema>> = async (
+    data,
+  ) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log(data);
+    form.reset();
+  };
+
   return (
-    <form action="#" className="mt-8 grid grid-cols-6 gap-6">
-      <div className="col-span-6 sm:col-span-3">
-        <label
-          htmlFor="FirstName"
-          className="block text-sm font-medium text-gray-700"
-        >
-          First Name
-        </label>
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="mt-8 grid grid-cols-6 gap-7"
+      >
+        <div className="col-span-6 sm:col-span-3">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nama Lengkap</FormLabel>
+                <FormControl>
+                  <Input placeholder="masukkan nama anda..." {...field} />
+                </FormControl>
+                <FormDescription>
+                  Nama lengkap anda minimal 3 karakter
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <input
-          type="text"
-          id="FirstName"
-          name="first_name"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
+        <div className="col-span-6 sm:col-span-3">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="masukkan email anda..." {...field} />
+                </FormControl>
+                <FormDescription>Email valid Anda.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-      <div className="col-span-6 sm:col-span-3">
-        <label
-          htmlFor="LastName"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Last Name
-        </label>
+        <div className="col-span-6">
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    placeholder="masukkan password anda..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>Password minimal 8 karakter.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <input
-          type="text"
-          id="LastName"
-          name="last_name"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
+        <div className="col-span-6">
+          <p className="text-sm text-gray-500">
+            Dengan membuat akun, Anda setuju dengan
+            <a href="#" className="text-gray-700 underline">
+              {" "}
+              terms and conditions{" "}
+            </a>
+            and{" "}
+            <a href="#" className="text-gray-700 underline">
+              privacy policy
+            </a>
+            .
+          </p>
+        </div>
 
-      <div className="col-span-6">
-        <label
-          htmlFor="Email"
-          className="block text-sm font-medium text-gray-700"
-        >
-          {" "}
-          Email{" "}
-        </label>
-
-        <input
-          type="email"
-          id="Email"
-          name="email"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
-
-      <div className="col-span-6 sm:col-span-3">
-        <label
-          htmlFor="Password"
-          className="block text-sm font-medium text-gray-700"
-        >
-          {" "}
-          Password{" "}
-        </label>
-
-        <input
-          type="password"
-          id="Password"
-          name="password"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
-
-      <div className="col-span-6 sm:col-span-3">
-        <label
-          htmlFor="PasswordConfirmation"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Password Confirmation
-        </label>
-
-        <input
-          type="password"
-          id="PasswordConfirmation"
-          name="password_confirmation"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
-
-      <div className="col-span-6">
-        <p className="text-sm text-gray-500">
-          By creating an account, you agree to our
-          <a href="#" className="text-gray-700 underline">
-            {" "}
-            terms and conditions{" "}
-          </a>
-          and
-          <a href="#" className="text-gray-700 underline">
-            privacy policy
-          </a>
-          .
-        </p>
-      </div>
-
-      <div className="col-span-6 justify-between sm:flex sm:items-center sm:gap-4">
-        <p className="mt-4 text-sm text-gray-500 sm:mt-0">
-          Already have an account?
-          <a href="#" className="text-sky-700 underline">
-            Log in
-          </a>
-          .
-        </p>
-        <button className="inline-block shrink-0 rounded-md border border-indigo-600 bg-indigo-500 px-12 py-3 text-sm font-semibold text-white transition hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-blue-500">
-          Create an account
-        </button>
-      </div>
-    </form>
+        <div className="col-span-6 justify-between sm:flex sm:items-center sm:gap-4">
+          <p className="mt-4 text-sm text-gray-500 sm:mt-0">
+            Sudah punya akun?
+            <a href="#" className="text-sky-700 underline">
+              Log in
+            </a>
+            .
+          </p>
+          <Button
+            onClick={() => form.handleSubmit(onSubmit)}
+            disabled={form.formState.isSubmitting}
+            className="rounded-md border border-indigo-600 bg-indigo-500 px-12 py-6 text-sm font-semibold text-white transition hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-blue-500"
+          >
+            Create an account
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 };
 
