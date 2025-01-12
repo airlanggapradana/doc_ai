@@ -9,6 +9,7 @@ import {
 import { AuthService } from './auth.service';
 import { Response } from 'express';
 import { Prisma } from '@prisma/client';
+import { z } from 'zod';
 
 @Controller('auth')
 export class AuthController {
@@ -55,9 +56,11 @@ export class AuthController {
         result: user,
       });
     } catch (error) {
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-        error: 'Error creating user',
-      });
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ errors: error.errors });
+      } else {
+        res.status(500).json({ message: 'Internal server error' });
+      }
     }
   }
 }

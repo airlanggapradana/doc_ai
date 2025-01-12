@@ -3,6 +3,16 @@ import { DatabaseService } from 'src/database/database.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma } from '@prisma/client';
+import { z } from 'zod';
+
+const userFormSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  name: z
+    .string()
+    .min(3, 'Min character is 3')
+    .max(255, 'Max character reached'),
+  password: z.string().min(8, 'Password must be at least 8 character'),
+});
 
 @Injectable()
 export class AuthService {
@@ -33,7 +43,7 @@ export class AuthService {
   }
 
   async register(createUserDto: Prisma.UserCreateInput) {
-    const { email, name, password } = createUserDto;
+    const { email, name, password } = userFormSchema.parse(createUserDto);
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
