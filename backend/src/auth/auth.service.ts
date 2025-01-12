@@ -35,11 +35,11 @@ export class AuthService {
           expiresIn: '1h',
         });
 
-        return { user, token };
+        return { rest, token };
       }
       throw new BadRequestException('Invalid password');
     }
-    throw new BadRequestException('email not found');
+    throw new BadRequestException('Invalid email');
   }
 
   async register(createUserDto: Prisma.UserCreateInput) {
