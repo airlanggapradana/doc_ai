@@ -37,7 +37,7 @@ model Diagnose {
   hasil_diagnosa String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  userDiagnose   User     @relation(fields: [userId], references: [id])
+  userDiagnose   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
 }
 

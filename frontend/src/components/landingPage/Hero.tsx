@@ -2,15 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import HeroIllustration from "../../../public/undraw_doctors_djoj.png";
+import { TextAnimate } from "@/components/ui/text-animate";
 
 const Hero = () => {
   return (
     <div className="mb-16 flex items-center justify-between">
       <div className="max-w-3xl">
-        <h1 className="text-4xl font-extrabold leading-normal">
-          Cek kesehatan anda darimana aja dengan
-          <span className="font-extrabold text-indigo-700"> Doc AI</span>
-        </h1>
+        <TextAnimate
+          animation="slideUp"
+          by="word"
+          duration={1.5}
+          className="text-4xl font-extrabold leading-relaxed"
+        >
+          Cek kesehatan anda darimana aja dengan Doc AI
+        </TextAnimate>
 
         <p className="mt-4 sm:text-lg/relaxed">
           Kami menyediakan layanan cek kesehatan yang dapat membantu anda

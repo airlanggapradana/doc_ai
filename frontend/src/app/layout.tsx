@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import "@/styles/globals.css";
+import QueryClientProvider from "@/lib/QueryClientProvider";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
@@ -16,10 +17,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
-        {children}
-        <Footer />
-      </body>
+      <QueryClientProvider>
+        <body>
+          {children}
+          <Footer />
+        </body>
+      </QueryClientProvider>
     </html>
   );
 }

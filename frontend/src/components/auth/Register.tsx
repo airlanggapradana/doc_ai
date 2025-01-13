@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,8 +14,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { register } from "@/actions/helperFunctions";
+import { Terminal } from "lucide-react";
 
-const registerFormSchema = z.object({
+export const registerFormSchema = z.object({
   email: z.string().email("Invalid email"),
   name: z.string().min(3, "Min 3 characters").max(255, "Max character reached"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -35,8 +38,20 @@ const Register = () => {
     data,
   ) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
-    form.reset();
+    const res = await register(data);
+
+    if (res.status === 201) {
+      form.reset();
+      return (
+        <Alert>
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>User Registration Success</AlertTitle>
+          <AlertDescription>
+            You may now login to your account.
+          </AlertDescription>
+        </Alert>
+      );
+    }
   };
 
   return (
@@ -126,7 +141,7 @@ const Register = () => {
             .
           </p>
           <Button
-            onClick={() => form.handleSubmit(onSubmit)}
+            onClick={form.handleSubmit(onSubmit)}
             disabled={form.formState.isSubmitting}
             className="rounded-md border border-indigo-600 bg-indigo-500 px-12 py-6 text-sm font-semibold text-white transition hover:bg-transparent hover:text-indigo-600 focus:outline-none focus:ring active:text-blue-500"
           >
