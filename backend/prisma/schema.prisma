@@ -43,6 +43,7 @@ model Diagnose {
 
 model HasilDiagnosa {
   id                   String                @id @default(cuid())
+  diagnosa_umum        String
   prediksi_penyakit    PrediksiPenyakit[]
   rekomendasi_makanan  RekomendasiMakanan[]
   rekomendasi_minuman  RekomendasiMinuman[]
@@ -61,7 +62,7 @@ model PrediksiPenyakit {
   sugesti         String
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
-  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id])
+  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id], onDelete: Cascade)
   hasilDiagnosaId String?
 }
 
@@ -71,7 +72,7 @@ model RekomendasiMakanan {
   sugesti         String
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
-  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id])
+  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id], onDelete: Cascade)
   hasilDiagnosaId String?
 }
 
@@ -81,7 +82,7 @@ model RekomendasiMinuman {
   sugesti         String
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
-  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id])
+  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id], onDelete: Cascade)
   hasilDiagnosaId String?
 }
 
@@ -92,7 +93,7 @@ model RekomendasiOlahraga {
   rutinitas       String
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
-  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id])
+  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id], onDelete: Cascade)
   hasilDiagnosaId String?
 }
 

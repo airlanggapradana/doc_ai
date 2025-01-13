@@ -17,6 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { register } from "@/actions/helperFunctions";
 import { Terminal } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export const registerFormSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -25,6 +27,7 @@ export const registerFormSchema = z.object({
 });
 
 const Register = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -42,6 +45,7 @@ const Register = () => {
 
     if (res.status === 201) {
       form.reset();
+      router.push("/login");
       return (
         <Alert>
           <Terminal className="h-4 w-4" />
@@ -135,9 +139,9 @@ const Register = () => {
         <div className="col-span-6 justify-between sm:flex sm:items-center sm:gap-4">
           <p className="mt-4 text-sm text-gray-500 sm:mt-0">
             Sudah punya akun?
-            <a href="#" className="text-sky-700 underline">
+            <Link href="/login" className="text-sky-700 underline">
               Log in
-            </a>
+            </Link>
             .
           </p>
           <Button

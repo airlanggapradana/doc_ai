@@ -7,11 +7,7 @@ export class UserService {
   constructor(private databaseService: DatabaseService) {}
 
   async findAll() {
-    const users = await this.databaseService.user.findMany({
-      include: {
-        diagnosa: true,
-      },
-    });
+    const users = await this.databaseService.user.findMany();
 
     const result = users.map((user) => {
       const { password, ...rest } = user;
@@ -25,7 +21,18 @@ export class UserService {
     const user = await this.databaseService.user.findUnique({
       where: { id },
       include: {
-        diagnosa: true,
+        diagnosa: {
+          include: {
+            hasil_diagnosa: {
+              include: {
+                prediksi_penyakit: true,
+                rekomendasi_makanan: true,
+                rekomendasi_minuman: true,
+                rekomendasi_olahraga: true,
+              },
+            },
+          },
+        },
       },
     });
 

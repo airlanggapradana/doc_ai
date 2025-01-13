@@ -8,8 +8,44 @@ export class DiagnoseService {
 
   async create(userId: string, createDiagnoseDto: Prisma.DiagnoseCreateInput) {
     const newDiagnose = await this.databaseService.diagnose.create({
+      include: {
+        hasil_diagnosa: {
+          include: {
+            prediksi_penyakit: true,
+            rekomendasi_makanan: true,
+            rekomendasi_minuman: true,
+            rekomendasi_olahraga: true,
+          },
+        },
+      },
       data: {
         ...createDiagnoseDto,
+        hasil_diagnosa: {
+          create: {
+            diagnosa_umum:
+              createDiagnoseDto.hasil_diagnosa.create.diagnosa_umum,
+            prediksi_penyakit: {
+              create:
+                createDiagnoseDto.hasil_diagnosa.create.prediksi_penyakit
+                  .create,
+            },
+            rekomendasi_makanan: {
+              create:
+                createDiagnoseDto.hasil_diagnosa.create.rekomendasi_makanan
+                  .create,
+            },
+            rekomendasi_minuman: {
+              create:
+                createDiagnoseDto.hasil_diagnosa.create.rekomendasi_minuman
+                  .create,
+            },
+            rekomendasi_olahraga: {
+              create:
+                createDiagnoseDto.hasil_diagnosa.create.rekomendasi_olahraga
+                  .create,
+            },
+          },
+        },
         userDiagnose: {
           connect: {
             id: userId,
