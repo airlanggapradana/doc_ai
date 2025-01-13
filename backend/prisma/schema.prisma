@@ -34,11 +34,66 @@ model Diagnose {
   rutinitas_olahraga RutinitasOlahraga
   golongan_darah     GolonganDarah
 
-  hasil_diagnosa String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  userDiagnose   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hasil_diagnosa HasilDiagnosa?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  userDiagnose   User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
+}
+
+model HasilDiagnosa {
+  id                   String                @id @default(cuid())
+  prediksi_penyakit    PrediksiPenyakit[]
+  rekomendasi_makanan  RekomendasiMakanan[]
+  rekomendasi_minuman  RekomendasiMinuman[]
+  rekomendasi_olahraga RekomendasiOlahraga[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  diagnosa   Diagnose @relation(fields: [diagnoseId], references: [id], onDelete: Cascade)
+  diagnoseId String   @unique
+}
+
+model PrediksiPenyakit {
+  id              String         @id @default(cuid())
+  nama            String
+  sugesti         String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id])
+  hasilDiagnosaId String?
+}
+
+model RekomendasiMakanan {
+  id              String         @id @default(cuid())
+  nama            String
+  sugesti         String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id])
+  hasilDiagnosaId String?
+}
+
+model RekomendasiMinuman {
+  id              String         @id @default(cuid())
+  nama            String
+  sugesti         String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id])
+  hasilDiagnosaId String?
+}
+
+model RekomendasiOlahraga {
+  id              String         @id @default(cuid())
+  nama            String
+  durasi          String
+  rutinitas       String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  HasilDiagnosa   HasilDiagnosa? @relation(fields: [hasilDiagnosaId], references: [id])
+  hasilDiagnosaId String?
 }
 
 enum Gender {
