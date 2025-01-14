@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { Beef, Bot, Hourglass, NotebookText } from "lucide-react";
+import { TextAnimate } from "../ui/text-animate";
 
 const Benefits = () => {
   const benefits = [
@@ -27,9 +28,14 @@ const Benefits = () => {
   ];
   return (
     <section className="mt-14 bg-white py-16">
-      <h2 className="text-4xl font-extrabold text-indigo-500">
+      <TextAnimate
+        duration={2.5}
+        animation="slideUp"
+        by="character"
+        className="text-4xl font-extrabold text-indigo-500"
+      >
         Premium Experience
-      </h2>
+      </TextAnimate>
       <p className="mt-3 font-medium text-gray-600">
         Rasakan berbagai keuntungan menggunakan layanan kami.
       </p>
