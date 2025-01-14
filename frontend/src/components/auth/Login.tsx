@@ -18,11 +18,7 @@ import { useRouter } from "next/navigation";
 import { login, setCookie } from "@/actions/helperFunctions";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Terminal } from "lucide-react";
-
-export const loginFormSchema = z.object({
-  email: z.string().email("Invalid email"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
+import { loginFormSchema } from "@/lib/form.schema";
 
 const Login = () => {
   const router = useRouter();

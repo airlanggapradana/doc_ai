@@ -34,7 +34,7 @@ export default async function DashboardLayout({
             <Sidebar />
           </ResizablePanel>
           <ResizableHandle withHandle />
-          {children}
+          <ResizablePanel>{children}</ResizablePanel>
         </ResizablePanelGroup>
       </div>
     </div>

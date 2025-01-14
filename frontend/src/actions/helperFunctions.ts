@@ -1,11 +1,12 @@
 "use server";
 import axios from "axios";
 import { env } from "@/env";
-import { registerFormSchema } from "@/components/auth/Register";
+import { registerFormSchema } from "@/lib/form.schema";
 import { z } from "zod";
 import { LoginResponse, RegisterResponse } from "@/types/response";
-import { loginFormSchema } from "@/components/auth/Login";
+import { loginFormSchema } from "@/lib/form.schema";
 import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 
 export const register = async (payload: z.infer<typeof registerFormSchema>) => {
   try {
@@ -29,6 +30,15 @@ export const login = async (payload: z.infer<typeof loginFormSchema>) => {
   } catch (error: unknown) {
     throw new Error("Failed to login");
   }
+};
+
+const getToken = async () => {
+  const cookie = (await cookies()).get("token");
+  if (!cookie) return null;
+  const token = cookie.value;
+
+  const decoded = jwt.decode(token, { json: true });
+  return decoded;
 };
 
 export const setCookie = async (data: string) => {

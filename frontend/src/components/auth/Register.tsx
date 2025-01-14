@@ -19,12 +19,7 @@ import { register } from "@/actions/helperFunctions";
 import { Terminal } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
-export const registerFormSchema = z.object({
-  email: z.string().email("Invalid email"),
-  name: z.string().min(3, "Min 3 characters").max(255, "Max character reached"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
-});
+import { registerFormSchema } from "@/lib/form.schema";
 
 const Register = () => {
   const router = useRouter();
