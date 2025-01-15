@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
@@ -19,98 +20,217 @@ import {
 } from "@/components/ui/select";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { diagnosaFormSchema } from "@/lib/form.schema";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const DiagnosaForm = () => {
+  const form = useForm<z.infer<typeof diagnosaFormSchema>>({
+    resolver: zodResolver(diagnosaFormSchema),
+    defaultValues: {
+      usia: "",
+      berat_badan: "",
+      gender: undefined,
+      tinggi_badan: "",
+      riwayat_penyakit: undefined,
+      rutinitas_olahraga: undefined,
+      golongan_darah: undefined,
+    },
+  });
+
+  const onSubmit: SubmitHandler<z.infer<typeof diagnosaFormSchema>> = async (
+    data,
+  ) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log(data);
+    form.reset();
+  };
+
   return (
-    <form action="#" className="mt-8 grid grid-cols-6 gap-6">
-      <div className="col-span-6 sm:col-span-3">
-        <label
-          htmlFor="FirstName"
-          className="block text-sm font-medium text-gray-700"
-        >
-          First Name
-        </label>
+    <Form {...form}>
+      <form
+        className="mt-8 grid grid-cols-6 gap-6"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <div className="col-span-6 sm:col-span-3">
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Gender</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || ""}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih Jenis Kelamin Anda" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="LAKI-LAKI">Laki Laki</SelectItem>
+                    <SelectItem value="PEREMPUAN">Perempuan</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>Tentukan jenis kelamin anda.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <input
-          type="text"
-          id="FirstName"
-          name="first_name"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
+        <div className="col-span-6 sm:col-span-3">
+          <FormField
+            control={form.control}
+            name="golongan_darah"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Golongan Darah</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || ""}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih golongan darah anda" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="A">A</SelectItem>
+                    <SelectItem value="B">B</SelectItem>
+                    <SelectItem value="AB">AB</SelectItem>
+                    <SelectItem value="O">O</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>Tentukan golongan darah anda.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-      <div className="col-span-6 sm:col-span-3">
-        <label
-          htmlFor="LastName"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Last Name
-        </label>
+        <div className="col-span-6 sm:col-span-3">
+          <FormField
+            control={form.control}
+            name="usia"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Usia</FormLabel>
+                <FormControl>
+                  <Input placeholder="masukkan usia anda..." {...field} />
+                </FormControl>
+                <FormDescription>
+                  Masukkan usia anda dalam bentuk angka.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <input
-          type="text"
-          id="LastName"
-          name="last_name"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
+        <div className="col-span-6 sm:col-span-3">
+          <FormField
+            control={form.control}
+            name="berat_badan"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Berat Badan</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="masukkan berat badan anda..."
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Masukkan berat badan anda dalam bentuk angka.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-      <div className="col-span-6">
-        <label
-          htmlFor="Email"
-          className="block text-sm font-medium text-gray-700"
-        >
-          {" "}
-          Email{" "}
-        </label>
+        <div className="col-span-6 sm:col-span-3">
+          <FormField
+            control={form.control}
+            name="tinggi_badan"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Tinggi Badan</FormLabel>
+                <FormControl>
+                  <Input placeholder="masukkan tinggi anda..." {...field} />
+                </FormControl>
+                <FormDescription>
+                  Masukkan tinggi anda dalam bentuk angka.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <input
-          type="email"
-          id="Email"
-          name="email"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
+        <div className="col-span-6 sm:col-span-3">
+          <FormField
+            control={form.control}
+            name="riwayat_penyakit"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Riwayat Penyakit</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="masukkan riwayat penyakit anda..."
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(e.target.value.split(","))}
+                  />
+                </FormControl>
+                <FormDescription>Harap pisahkan dengan koma.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-      <div className="col-span-6 sm:col-span-3">
-        <label
-          htmlFor="Password"
-          className="block text-sm font-medium text-gray-700"
-        >
-          {" "}
-          Password{" "}
-        </label>
+        <div className="col-span-6 sm:col-span-3">
+          <FormField
+            control={form.control}
+            name="rutinitas_olahraga"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Rutinitas Olahraga</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value || ""}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih rutinitas olahraga anda" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="TIDAK">TIDAK PERNAH</SelectItem>
+                    <SelectItem value="KURANG">KURANG</SelectItem>
+                    <SelectItem value="CUKUP">CUKUP</SelectItem>
+                    <SelectItem value="BANYAK">SERING</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>Harap isi dengan jujur.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-        <input
-          type="password"
-          id="Password"
-          name="password"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
-
-      <div className="col-span-6 sm:col-span-3">
-        <label
-          htmlFor="PasswordConfirmation"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Password Confirmation
-        </label>
-
-        <input
-          type="password"
-          id="PasswordConfirmation"
-          name="password_confirmation"
-          className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-        />
-      </div>
-
-      <div className="col-span-6 justify-end sm:flex sm:items-center sm:gap-4">
-        <Button className="rounded-md border border-blue-600 bg-indigo-600 px-12 py-6 text-sm font-semibold text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-          Create an account
-        </Button>
-      </div>
-    </form>
+        <div className="col-span-6 justify-end sm:flex sm:items-center sm:gap-4">
+          <Button
+            onClick={form.handleSubmit(onSubmit)}
+            disabled={form.formState.isSubmitting}
+            className="rounded-md border border-blue-600 bg-indigo-600 px-12 py-6 text-sm font-semibold text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+          >
+            Analisa Sekarang
+          </Button>
+        </div>
+      </form>
+    </Form>
   );
 };
 

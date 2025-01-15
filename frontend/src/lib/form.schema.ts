@@ -13,22 +13,13 @@ export const loginFormSchema = z.object({
 
 export const diagnosaFormSchema = z.object({
   usia: z
-    .number()
-    .int("field usia must be a number")
-    .positive("usia must be positive")
-    .min(1, "usia must be greater than 0"),
+    .string()
+    .min(1, "usia must be greater than 0")
+    .max(100, "usia must be less than 100"),
   gender: z.enum(["LAKI-LAKI", "PEREMPUAN"]),
   riwayat_penyakit: z.array(z.string()),
-  berat_badan: z
-    .number()
-    .int("field berat_badan must be a number")
-    .positive("berat_badan must be positive")
-    .min(1, "berat_badan must be greater than 0"),
-  tinggi_badan: z
-    .number()
-    .int("field tinggi_badan must be a number")
-    .positive("tinggi_badan must be positive")
-    .min(1, "tinggi_badan must be greater than 0"),
+  berat_badan: z.string().min(1, "berat_badan must be greater than 0"),
+  tinggi_badan: z.string().min(1, "tinggi_badan must be greater than 100"),
   rutinitas_olahraga: z.enum(["TIDAK", "KURANG", "CUKUP", "BANYAK"]),
   golongan_darah: z.enum(["A", "B", "AB", "O"]),
 });
