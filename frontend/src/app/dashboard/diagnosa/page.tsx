@@ -6,7 +6,7 @@ export default function DiagnosaPage() {
   return (
     <div className="h-full w-full p-4">
       <div className="flex h-full items-center justify-center">
-        <div className="w-full">
+        <div className="h-full w-full overflow-auto py-10">
           <div className="mx-auto max-w-screen-xl">
             <Back />
             <div className="flex flex-col gap-3">
