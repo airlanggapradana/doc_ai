@@ -23,6 +23,8 @@ import { diagnosaFormSchema } from "@/lib/form.schema";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { geminiModel } from "@/actions/gemini.model";
+import { MedicalRecommendation } from "@/types/response";
+import HasilDiagnosa from "./HasilDiagnosa";
 
 const DiagnosaForm = () => {
   const form = useForm<z.infer<typeof diagnosaFormSchema>>({
@@ -38,7 +40,9 @@ const DiagnosaForm = () => {
     },
   });
 
-  const [response, setResponse] = React.useState<string | null>(null);
+  const [response, setResponse] = React.useState<MedicalRecommendation | null>(
+    null,
+  );
 
   const onSubmit: SubmitHandler<z.infer<typeof diagnosaFormSchema>> = async (
     data,
@@ -48,7 +52,8 @@ const DiagnosaForm = () => {
     if (!response) return null;
 
     if (response) {
-      setResponse(response);
+      const parsing = JSON.parse(response) as MedicalRecommendation;
+      setResponse(parsing);
       form.reset();
     }
   };
@@ -248,11 +253,9 @@ const DiagnosaForm = () => {
       </Form>
 
       {response ? (
-        <div className="mt-8">
+        <div className="mt-8 space-y-5">
           <h2 className="text-xl font-semibold">Hasil Analisa</h2>
-          <pre className="mt-4 w-fit rounded-md bg-gray-100 p-4">
-            {response}
-          </pre>
+          <HasilDiagnosa response={response} />
         </div>
       ) : null}
     </>
