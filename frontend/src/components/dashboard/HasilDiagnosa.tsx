@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Card,
@@ -13,14 +14,38 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-
 import { MedicalRecommendation } from "@/types/response";
 import { HeartPulse } from "lucide-react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import { diagnosaFormSchema } from "@/lib/form.schema";
+import { z } from "zod";
+import { saveDiagnosa } from "@/actions/helperFunctions";
+import { useMutation } from "@tanstack/react-query";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
-const HasilDiagnosa = ({ response }: { response: MedicalRecommendation }) => {
+const HasilDiagnosa = ({
+  response,
+  request,
+}: {
+  response: MedicalRecommendation;
+  request: z.infer<typeof diagnosaFormSchema>;
+}) => {
+  const router = useRouter();
+  const payload = { ...request, hasil_diagnosa: response };
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationKey: ["saveDiagnosa", payload],
+    mutationFn: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      return await saveDiagnosa(payload);
+    },
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
+
   return (
     <Card>
       <CardHeader>
@@ -124,9 +149,10 @@ const HasilDiagnosa = ({ response }: { response: MedicalRecommendation }) => {
 
         <Button
           variant={"ghost"}
-          className="bg-indigo-600 px-8 py-6 font-bold text-white hover:bg-transparent hover:text-indigo-600"
+          onClick={() => mutateAsync()}
+          disabled={isPending}
         >
-          Simpan Hasil
+          Simpan Hasil Diagnosa
         </Button>
       </CardFooter>
     </Card>

@@ -1,12 +1,18 @@
 "use server";
 import axios from "axios";
 import { env } from "@/env";
-import { registerFormSchema } from "@/lib/form.schema";
+import { diagnosaFormSchema, registerFormSchema } from "@/lib/form.schema";
 import { z } from "zod";
-import { LoginResponse, RegisterResponse } from "@/types/response";
+import {
+  LoginResponse,
+  MedicalRecommendation,
+  RegisterResponse,
+  Token,
+} from "@/types/response";
 import { loginFormSchema } from "@/lib/form.schema";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import { SaveDiagnosa } from "@/types/diagnosa";
 
 export const register = async (payload: z.infer<typeof registerFormSchema>) => {
   try {
@@ -32,13 +38,79 @@ export const login = async (payload: z.infer<typeof loginFormSchema>) => {
   }
 };
 
-const getToken = async () => {
+export const saveDiagnosa = async (
+  payload: z.infer<typeof diagnosaFormSchema> & {
+    hasil_diagnosa: MedicalRecommendation;
+  },
+) => {
+  const data = JSON.stringify({
+    usia: parseInt(payload.usia),
+    gender: payload.gender,
+    riwayat_penyakit: payload.riwayat_penyakit,
+    berat_badan: parseInt(payload.berat_badan),
+    tinggi_badan: parseInt(payload.tinggi_badan),
+    rutinitas_olahraga: payload.rutinitas_olahraga,
+    golongan_darah: payload.golongan_darah,
+    hasil_diagnosa: {
+      create: {
+        diagnosa_umum: payload.hasil_diagnosa.diagnosa_umum,
+        prediksi_penyakit: {
+          create: payload.hasil_diagnosa.prediksi_penyakit.map((penyakit) => ({
+            nama: penyakit.nama,
+            sugesti: penyakit.sugesti,
+          })),
+        },
+        rekomendasi_makanan: {
+          create: payload.hasil_diagnosa.rekomendasi_makanan.map((makanan) => ({
+            nama: makanan.nama,
+            sugesti: makanan.sugesti,
+          })),
+        },
+        rekomendasi_minuman: {
+          create: payload.hasil_diagnosa.rekomendasi_minuman.map((minuman) => ({
+            nama: minuman.nama,
+            sugesti: minuman.sugesti,
+          })),
+        },
+        rekomendasi_olahraga: {
+          create: payload.hasil_diagnosa.rekomendasi_olahraga.map(
+            (olahraga) => ({
+              nama: olahraga.nama,
+              durasi: olahraga.durasi,
+              rutinitas: olahraga.rutinitas,
+            }),
+          ),
+        },
+      },
+    },
+  });
+
+  const session = await getToken();
+  if (!session) return null;
+  const token = session.token;
+
+  const response = await axios.post(
+    `${env.NEXT_PUBLIC_BASE_API_URL}/diagnose/${session.user.id}`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      maxBodyLength: Infinity,
+    },
+  );
+
+  return { status: response.status, data: response.data as SaveDiagnosa };
+};
+
+export const getToken = async () => {
   const cookie = (await cookies()).get("token");
   if (!cookie) return null;
   const token = cookie.value;
 
   const decoded = jwt.decode(token, { json: true });
-  return decoded;
+  return { token, user: decoded as Token };
 };
 
 export const setCookie = async (data: string) => {

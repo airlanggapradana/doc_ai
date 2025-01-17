@@ -44,10 +44,14 @@ const DiagnosaForm = () => {
     null,
   );
 
+  const [request, setRequest] =
+    React.useState<z.infer<typeof diagnosaFormSchema>>();
+
   const onSubmit: SubmitHandler<z.infer<typeof diagnosaFormSchema>> = async (
     data,
   ) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
+    setRequest(data);
     const response = await geminiModel({ payload: data });
     if (!response) return null;
 
@@ -252,10 +256,10 @@ const DiagnosaForm = () => {
         </form>
       </Form>
 
-      {response ? (
+      {response && request ? (
         <div className="mt-8 space-y-5">
           <h2 className="text-xl font-semibold">Hasil Analisa</h2>
-          <HasilDiagnosa response={response} />
+          <HasilDiagnosa response={response} request={request} />
         </div>
       ) : null}
     </>

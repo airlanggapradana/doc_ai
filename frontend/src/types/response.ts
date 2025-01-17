@@ -58,3 +58,13 @@ export interface MedicalRecommendation {
   rekomendasi_minuman: RekomendasiMinuman[];
   rekomendasi_olahraga: RekomendasiOlahraga[];
 }
+
+export interface Token {
+  id: string;
+  email: string;
+  name: string;
+  createdAt: string; // or Date if you're parsing the ISO string
+  updatedAt: string; // or Date if you're parsing the ISO string
+  iat: number; // issued at timestamp
+  exp: number; // expiration timestamp
+}
