@@ -21,10 +21,9 @@ import { id } from "date-fns/locale";
 import { diagnosaFormSchema } from "@/lib/form.schema";
 import { z } from "zod";
 import { saveDiagnosa } from "@/actions/helperFunctions";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
 
 const HasilDiagnosa = ({
   response,
@@ -33,22 +32,21 @@ const HasilDiagnosa = ({
   response: MedicalRecommendation;
   request: z.infer<typeof diagnosaFormSchema>;
 }) => {
-  const router = useRouter();
+  const queryClient = useQueryClient();
   const { toast } = useToast();
   const payload = { ...request, hasil_diagnosa: response };
 
   const { mutateAsync, isPending } = useMutation({
-    mutationKey: ["saveDiagnosa", payload],
     mutationFn: async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      return await saveDiagnosa(payload);
+      await saveDiagnosa(payload);
     },
-    onSuccess: async () => {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["historiDiagnosa"] });
       toast({
         title: "Berhasil",
         description: "Hasil diagnosa berhasil disimpan",
       });
-      router.refresh();
     },
   });
 

@@ -1,5 +1,6 @@
 import React from "react";
 import Logout from "@/components/Logout";
+import HistoriDiagnosa from "./HistoriDiagnosa";
 
 const Sidebar = () => {
   return (
@@ -12,7 +13,9 @@ const Sidebar = () => {
           <Logout />
         </div>
 
-        <div className="h-full w-full p-4">history_diagnosa</div>
+        <div className="h-full w-full p-4">
+          <HistoriDiagnosa />
+        </div>
         <div className="absolute bottom-0 w-full border-t-2 border-indigo-300 p-4">
           <p className="mt-4 text-center text-sm text-gray-500 lg:mt-0">
             Created by Airlangga Pradana &copy; 2025. All rights reserved.

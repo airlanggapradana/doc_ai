@@ -62,6 +62,16 @@ export class DiagnoseService {
       where: {
         id: DiagnoseId,
       },
+      include: {
+        hasil_diagnosa: {
+          include: {
+            prediksi_penyakit: true,
+            rekomendasi_makanan: true,
+            rekomendasi_minuman: true,
+            rekomendasi_olahraga: true,
+          },
+        },
+      },
     });
 
     if (!diagnose) {

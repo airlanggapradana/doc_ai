@@ -12,7 +12,7 @@ import {
 import { loginFormSchema } from "@/lib/form.schema";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
-import { SaveDiagnosa } from "@/types/diagnosa";
+import { SaveDiagnosa, UserWithDiagnosa } from "@/types/diagnosa";
 
 export const register = async (payload: z.infer<typeof registerFormSchema>) => {
   try {
@@ -102,6 +102,31 @@ export const saveDiagnosa = async (
   );
 
   return { status: response.status, data: response.data as SaveDiagnosa };
+};
+
+export const getDiagnosa = async () => {
+  try {
+    const session = await getToken();
+    if (!session) return null;
+    const token = session.token;
+
+    const response = await axios.get(
+      `${env.NEXT_PUBLIC_BASE_API_URL}/user/${session.user.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    return {
+      status: response.status,
+      result: response.data as UserWithDiagnosa,
+    };
+  } catch (error) {
+    throw new Error("Failed to get diagnosa");
+  }
 };
 
 export const getToken = async () => {
