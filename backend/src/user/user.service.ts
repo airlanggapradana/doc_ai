@@ -21,18 +21,7 @@ export class UserService {
     const user = await this.databaseService.user.findUnique({
       where: { id },
       include: {
-        diagnosa: {
-          include: {
-            hasil_diagnosa: {
-              include: {
-                prediksi_penyakit: true,
-                rekomendasi_makanan: true,
-                rekomendasi_minuman: true,
-                rekomendasi_olahraga: true,
-              },
-            },
-          },
-        },
+        diagnosa: true,
       },
     });
 

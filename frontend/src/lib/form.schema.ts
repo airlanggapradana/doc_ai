@@ -16,7 +16,7 @@ export const diagnosaFormSchema = z.object({
     .string()
     .min(1, "usia must be greater than 0")
     .max(100, "usia must be less than 100"),
-  gender: z.enum(["LAKI-LAKI", "PEREMPUAN"]),
+  gender: z.enum(["LAKI_LAKI", "PEREMPUAN"]),
   riwayat_penyakit: z.array(z.string()),
   berat_badan: z.string().min(1, "berat_badan must be greater than 0"),
   tinggi_badan: z.string().min(1, "tinggi_badan must be greater than 100"),

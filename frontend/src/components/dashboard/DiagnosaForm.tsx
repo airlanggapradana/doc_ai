@@ -86,7 +86,7 @@ const DiagnosaForm = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="LAKI-LAKI">Laki Laki</SelectItem>
+                      <SelectItem value="LAKI_LAKI">Laki Laki</SelectItem>
                       <SelectItem value="PEREMPUAN">Perempuan</SelectItem>
                     </SelectContent>
                   </Select>

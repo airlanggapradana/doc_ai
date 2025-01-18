@@ -32,7 +32,7 @@ export class AuthService {
         const { password, ...rest } = user;
         const token = this.jwtService.sign(rest, {
           algorithm: 'HS256',
-          expiresIn: '1h',
+          expiresIn: '1d',
         });
 
         return { rest, token };

@@ -23,6 +23,7 @@ import { z } from "zod";
 import { saveDiagnosa } from "@/actions/helperFunctions";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "../ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
 const HasilDiagnosa = ({
@@ -33,15 +34,20 @@ const HasilDiagnosa = ({
   request: z.infer<typeof diagnosaFormSchema>;
 }) => {
   const router = useRouter();
+  const { toast } = useToast();
   const payload = { ...request, hasil_diagnosa: response };
 
   const { mutateAsync, isPending } = useMutation({
     mutationKey: ["saveDiagnosa", payload],
     mutationFn: async () => {
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       return await saveDiagnosa(payload);
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      toast({
+        title: "Berhasil",
+        description: "Hasil diagnosa berhasil disimpan",
+      });
       router.refresh();
     },
   });
