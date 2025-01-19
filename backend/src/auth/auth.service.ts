@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DatabaseService } from 'src/database/database.service';
+import { DatabaseService } from '../database/database.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma } from '@prisma/client';
