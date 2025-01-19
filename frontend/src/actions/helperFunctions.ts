@@ -154,6 +154,28 @@ export const getSingleDiagnosa = async (diagnosa_id: string) => {
   }
 };
 
+export const deleteDiagnosa = async (diagnosa_id: string) => {
+  try {
+    const session = await getToken();
+    if (!session) return null;
+    const token = session.token;
+
+    const response = await axios.delete(
+      `${env.NEXT_PUBLIC_BASE_API_URL}/diagnose/${diagnosa_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+
+    return response.status;
+  } catch (error) {
+    throw new Error("Failed to delete diagnosa");
+  }
+};
+
 export const getToken = async () => {
   const cookie = (await cookies()).get("token");
   if (!cookie) return null;

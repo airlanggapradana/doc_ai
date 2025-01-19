@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getSingleDiagnosa } from "@/actions/helperFunctions";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteDiagnosa, getSingleDiagnosa } from "@/actions/helperFunctions";
 import {
   Card,
   CardContent,
@@ -18,11 +18,24 @@ import {
 } from "@/components/ui/accordion";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
+import { Button } from "../ui/button";
+import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const SingleDiagnosa = ({ diagnosa_id }: { diagnosa_id: string }) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { data, error, isLoading } = useQuery({
     queryKey: ["single-diagnosa", diagnosa_id],
     queryFn: async () => await getSingleDiagnosa(diagnosa_id),
+  });
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: async () => await deleteDiagnosa(diagnosa_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["historiDiagnosa"] });
+      router.push("/dashboard");
+    },
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -144,10 +157,19 @@ const SingleDiagnosa = ({ diagnosa_id }: { diagnosa_id: string }) => {
           </AccordionItem>
         </Accordion>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex items-center justify-between">
         <p className="text-sm font-light text-gray-500">
           {format(res.createdAt, "PPPP", { locale: id })}
         </p>
+
+        <Button
+          variant={"destructive"}
+          className="px-4 py-5"
+          disabled={isPending}
+          onClick={() => mutateAsync()}
+        >
+          <Trash2 size={18} />
+        </Button>
       </CardFooter>
     </Card>
   );
