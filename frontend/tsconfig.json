@@ -13,6 +13,8 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
+    "@typescript-eslint/restrict-template-expressions": false,
+    "@typescript-eslint/no-floating-promises": false,
 
     /* Bundled projects */
     "lib": ["dom", "dom.iterable", "ES2022"],
