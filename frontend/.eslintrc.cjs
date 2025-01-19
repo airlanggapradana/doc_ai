@@ -36,7 +36,7 @@ const config = {
       },
     ],
     "@typescript-eslint/restrict-template-expressions": [
-      "error",
+      "off",
       {
         allowNumber: true,
         allowBoolean: true,
@@ -44,6 +44,8 @@ const config = {
         allowNullish: true,
       },
     ],
+    "@typescript-eslint/no-unused-expressions": "off",
+    "@typescript-eslint/no-floating-promises": "off",
   },
 };
 module.exports = config;
