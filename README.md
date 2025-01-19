@@ -22,7 +22,6 @@ An AI-powered health diagnosis and lifestyle recommendation web application leve
 - **NestJS**: Backend framework
 - **Prisma**: Database ORM
 - **Supabase**: Database and authentication
-- **WebSocket**: Real-time communication
 
 ## 🤝 Contributing
 
