@@ -14,6 +14,7 @@ import { Diagnosa } from "@/types/diagnosa";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import Link from "next/link";
+import Loading from "@/app/loading";
 
 const HistoriDiagnosa = () => {
   const { data, error, isLoading } = useQuery({
@@ -27,7 +28,7 @@ const HistoriDiagnosa = () => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>Data not found</div>;
   return (

@@ -21,6 +21,7 @@ import { id } from "date-fns/locale";
 import { Button } from "../ui/button";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Loading from "@/app/loading";
 
 const SingleDiagnosa = ({ diagnosa_id }: { diagnosa_id: string }) => {
   const router = useRouter();
@@ -38,7 +39,7 @@ const SingleDiagnosa = ({ diagnosa_id }: { diagnosa_id: string }) => {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (error) return <div>Error: {error.message}</div>;
   if (!data) return <div>No data found</div>;
 

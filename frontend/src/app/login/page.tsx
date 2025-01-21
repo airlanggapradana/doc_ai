@@ -14,8 +14,7 @@ export default function LoginPage() {
             </h1>
 
             <p className="mt-4 text-center leading-relaxed text-gray-500">
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-              nam dolorum aliquam, quibusdam aperiam voluptatum.
+              Harap masukkan email dan password yang telah terdaftar.
             </p>
 
             <Login />
